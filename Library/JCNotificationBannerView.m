@@ -29,15 +29,16 @@ const CGFloat kJCNotificationBannerViewMarginY = 5.0;
     self.iconImageView = [UIImageView new];
     [self addSubview:self.iconImageView];
     self.titleLabel = [UILabel new];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    self.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     self.titleLabel.textColor = [UIColor lightTextColor];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.titleLabel];
     self.messageLabel = [UILabel new];
-    self.messageLabel.font = [UIFont systemFontOfSize:14];
+    self.messageLabel.font = [UIFont systemFontOfSize:16];
     self.messageLabel.textColor = [UIColor lightTextColor];
     self.messageLabel.backgroundColor = [UIColor clearColor];
     self.messageLabel.numberOfLines = 0;
+    self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [self addSubview:self.messageLabel];
 
     UITapGestureRecognizer* tapRecognizer;
@@ -102,12 +103,9 @@ const CGFloat kJCNotificationBannerViewMarginY = 5.0;
   }
   self.messageLabel.frame = CGRectMake(currentX, currentY, contentWidth, (self.frame.size.height - borderY) - currentY);
   [self.messageLabel sizeToFit];
-  CGRect messageFrame = self.messageLabel.frame;
-  CGFloat spillY = (currentY + messageFrame.size.height + kJCNotificationBannerViewMarginY) - self.frame.size.height;
-  if (spillY > 0.0) {
-    messageFrame.size.height -= spillY;
-    self.messageLabel.frame = messageFrame;
-  }
+  CGRect frame = self.frame;
+  frame.size.height = self.messageLabel.frame.size.height + currentY + kJCNotificationBannerViewMarginY + 10.;
+  self.frame = frame;
 }
 
 - (void) setNotificationBanner:(JCNotificationBanner*)notification {
